@@ -143,4 +143,10 @@ Theorem add_shuffle3 : forall n m p : nat,
 Proof.
   (* FILL IN HERE *) 
   intros.
-  rewrite <- add_assoc.
+  rewrite add_comm.
+  assert (H: p + n = n + p).
+  { rewrite add_comm. reflexivity. }
+  rewrite <- H.
+  rewrite add_assoc.
+  reflexivity.
+Qed.  
