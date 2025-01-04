@@ -1844,3 +1844,36 @@ Proof.
   rewrite add_comm. reflexivity.
 Qed.
 
+Theorem bin_to_nat_pres_incr : forall b : bin,
+  bin_to_nat (incr b) = 1 + bin_to_nat b.
+Proof.
+  (* FILL IN HERE *)
+  induction b.
+  simpl. reflexivity.
+  simpl. reflexivity.
+  simpl. rewrite IHb.
+  rewrite add_assoc.
+  rewrite add_assoc.
+  rewrite add_assoc.
+  replace ((1 + (bin_to_nat b)) + 1) with (1 + (1 + (bin_to_nat b))). simpl. reflexivity.
+  rewrite <- IHb.
+  rewrite add_comm.
+  reflexivity.
+Qed.
+
+Fixpoint nat_to_bin (n:nat) : bin :=
+  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *)
+  match n with
+  | 0 => Z
+  | S n' => incr (nat_to_bin n')
+  end.
+  
+Compute bin_to_nat (nat_to_bin 5).
+
+Theorem nat_bin_nat : forall n, bin_to_nat (nat_to_bin n) = n.
+Proof.
+  (* FILL IN HERE *)
+  induction n as [|n' IHn'].
+  reflexivity.
+  simpl. rewrite bin_to_nat_pres_incr. simpl. rewrite IHn'. reflexivity.
+Qed.
