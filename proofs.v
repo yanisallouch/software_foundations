@@ -1740,3 +1740,107 @@ Proof.
   - intro. simpl. rewrite IHp'. reflexivity.  rewrite H. reflexivity.
 Qed.
 
+(* For each of the following theorems, first think about whether (a) it can be proved using only simplification and rewriting, (b) it also requires case analysis (destruct), or (c) it also requires induction. Write down your prediction. Then fill in the proof.
+*)
+Theorem leb_refl : forall n:nat,
+  (n <=? n) = true.
+  (* my guess: a / my proof: c *)
+Proof.
+  (* FILL IN HERE *)
+  induction n as [|n' IHn'].
+  - reflexivity.
+  - simpl. rewrite <- IHn'. reflexivity.
+Qed.
+
+Theorem zero_neqb_S : forall n:nat,
+  0 =? (S n) = false.
+    (* b / a *)
+Proof.
+  (* FILL IN HERE *)
+  reflexivity.
+Qed.
+  
+Theorem andb_false_r : forall b : bool,
+  andb b false = false.
+    (* b / b *)
+Proof.
+  (* FILL IN HERE *)
+  intro b.
+  destruct b.
+  reflexivity.
+  reflexivity.
+Qed.
+
+Theorem S_neqb_0 : forall n:nat,
+  (S n) =? 0 = false.
+    (* c / a *)
+Proof.
+  (* FILL IN HERE *)
+  intros.
+  reflexivity.
+Qed.
+
+Theorem mult_1_l : forall n:nat, 1 * n = n.
+  (* c / c *)
+Proof.
+  (* FILL IN HERE *)
+  intros.
+  simpl.
+  induction n as [|n' IHn'].
+  reflexivity.
+  simpl.
+  rewrite IHn'.
+  reflexivity.
+Qed.
+
+Theorem all3_spec : forall b c : bool,
+  orb
+    (andb b c)
+    (orb (negb b)
+         (negb c))
+  = true.
+    (* b / b*)
+Proof.
+  (* FILL IN HERE *)
+  intros.
+  destruct b.
+  simpl. destruct c. reflexivity. reflexivity. reflexivity.
+Qed.
+
+Theorem mult_plus_distr_r : forall n m p : nat,
+  (n + m) * p = (n * p) + (m * p).
+    (* c *)
+Proof.
+  (* FILL IN HERE *)
+  induction n as [|n' IHn'].
+  intros.
+  simpl. reflexivity.
+  intros. simpl.
+  rewrite IHn'.
+  rewrite add_assoc. reflexivity.
+Qed.
+
+Theorem mult_assoc : forall n m p : nat,
+  n * (m * p) = (n * m) * p.
+    (* c *)
+Proof.
+  (* FILL IN HERE *)
+  induction n as [|n' IHn'].
+  intros.
+  simpl. reflexivity.
+  intros. simpl.
+  rewrite mult_plus_distr_r.
+  rewrite IHn'. reflexivity.
+Qed.
+
+Theorem add_shuffle3' : forall n m p : nat,
+  n + (m + p) = m + (n + p).
+Proof.
+  (* FILL IN HERE *)
+  intros.
+  rewrite add_assoc.
+  replace (n + m) with (m + n).
+  rewrite add_assoc. reflexivity.
+  rewrite add_comm. reflexivity.
+Qed.
+
