@@ -1067,7 +1067,7 @@ Example test_ltb3: (ltb 4 2) = false.
 (* FILL IN HERE *) 
 Proof. simpl. reflexivity. Qed.
 
-Theorem plus_O_n : forall n : nat, 0 + n = n.
+Theorem plus_O_n''' : forall n : nat, 0 + n = n.
 Proof.
   intros n. simpl. reflexivity. Qed.
 
@@ -1876,4 +1876,101 @@ Proof.
   induction n as [|n' IHn'].
   reflexivity.
   simpl. rewrite bin_to_nat_pres_incr. simpl. rewrite IHn'. reflexivity.
+Qed.
+
+Lemma double_incr : forall n : nat, double (S n) = S (S (double n)).
+Proof.
+  (* FILL IN HERE *) 
+  intro.
+  simpl. reflexivity.
+Qed.
+
+Definition double_bin (b:bin) : bin
+  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *) :=
+  match b with
+  | Z => Z
+  | _ => B0 b (* Ajouter un 0 à la droite, ce qui revient à doubler *)
+  end.
+
+Example double_bin_zero : double_bin Z = Z.
+(* FILL IN HERE *) 
+simpl. reflexivity.
+Qed.
+
+Lemma double_incr_bin : forall b,
+    double_bin (incr b) = incr (incr (double_bin b)).
+Proof.
+  (* FILL IN HERE *) 
+  intro.
+  destruct b.
+  simpl. reflexivity.
+  simpl. reflexivity.
+  simpl. reflexivity.
+Qed.
+
+Theorem bin_nat_bin_fails : forall b, nat_to_bin (bin_to_nat b) = b.
+Proof.
+intro. destruct b.
+simpl. reflexivity.
+simpl. assert (H: bin_to_nat b + 0 = 0 + bin_to_nat b).
+      { rewrite <- add_0_r. reflexivity. }
+      rewrite H. simpl. 
+Abort.
+
+Fixpoint normalize (b:bin) : bin
+  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *) :=
+  match b with
+  | Z => Z
+  | B0 Z => Z
+  | B0 b' => (normalize b')
+  | B1 b' => B1 (normalize b')
+  end.
+
+(* Example 1: normalize Z = Z *)
+Example normalize_ex1 :
+  normalize Z = Z.
+Proof.
+  simpl. reflexivity.
+Qed.
+
+(* Example 2: normalize (B0 Z) = Z *)
+Example normalize_ex2 :
+  normalize (B0 Z) = Z.
+Proof.
+  simpl. reflexivity.
+Qed.
+
+(* Example 3: normalize (B0 (B0 Z)) = Z *)
+Example normalize_ex3 :
+  normalize (B0 (B0 Z)) = Z.
+Proof.
+  simpl. reflexivity.
+Qed.
+
+(* Example 4: normalize (B1 Z) = B1 Z *)
+Example normalize_ex4 :
+  normalize (B1 Z) = B1 Z.
+Proof.
+  simpl. reflexivity.
+Qed.
+
+(* Example 5: normalize (B0 (B1 Z)) = B0 (B1 Z) *)
+Example normalize_ex5 :
+  normalize (B0 (B1 Z)) = (B1 Z).
+Proof.
+  simpl. reflexivity.
+Qed.
+
+(* Example 6: normalize (B1 (B0 Z)) = B1 (B0 Z) *)
+Example normalize_ex6 :
+  normalize (B1 (B0 Z)) = B1 (B0 Z).
+Proof.
+  simpl. reflexivity.
+Qed.
+
+(* Example 7: normalize (B0 (B0 (B1 Z))) = B0 (B0 (B1 Z)) *)
+Example normalize_ex7 :
+  normalize (B0 (B0 (B1 Z))) = B0 (B0 (B1 Z)).
+Proof.
+  simpl. reflexivity.
 Qed.
